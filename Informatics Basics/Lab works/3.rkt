@@ -120,7 +120,7 @@
   (let ((sign (car expr)))
     `(* (,sign ,a ,b) (+ (- (expt ,a 2) (* ,a ,b)) (expt ,b 2)))))
 
-; Тестированиеы
+; Тестирование
 
 (define factorize-tests
   (list (test (factorize '(- (expt x 2) (expt y 2)))
