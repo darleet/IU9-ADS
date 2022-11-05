@@ -1,6 +1,13 @@
 # ignore all logs
 *.log
 
-# ignore compiled files
+# ignore compiled files in Scheme
 *.bak
 *.rkt~
+
+# ignore executables and logs in C
+/Algorithms and Data Structures/*
+!*.c
+
+# ignore settings
+.vscode/
