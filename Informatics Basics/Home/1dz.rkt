@@ -4,13 +4,14 @@
          (m (- (+ (* 12 a) month) 2))
          (// (lambda (a b) (quotient a b))))
     (remainder
-     (+ day
-        y
-        (// y 4)
-        (- (// y 100))
-        (// y 400)
-        (// (* 31 m) 12)
-        7000)
+     (+
+      day
+      y
+      (// y 4)
+      (- (// y 100))
+      (// y 400)
+      (// (* 31 m) 12)
+      7000)
      7)))
 
 (define (quad-solve a b c)
@@ -25,19 +26,8 @@
 
 ; Воспользуемся Алгоритмом Евклида
 ; Реализуем его при помощи хвостовой рекурсии
-(define (my-gcd a b)
-  (define (loop x y)
-    (if (or (= 0 x) (= 0 y))
-        0
-        (if (> x y)
-            (loop (- x y) y)
-            (if (< x y)
-                (loop x (- y x))
-                x))))
-  (loop a b))
 
-; Реализация через cond
-(define (my-gcd1 a b)
+(define (my-gcd a b)
   (define (loop x y)
     (cond ((or (= 0 x) (= 0 y)) 0)
           ((> x y) (loop (- x y) y))
