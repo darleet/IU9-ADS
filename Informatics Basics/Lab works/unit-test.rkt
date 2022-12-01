@@ -10,15 +10,18 @@
     (if (null? tests)
         correct?
         (let ((expr (caar tests)))
+          (write expr)
           (let* ((result (eval expr ie))
                  (check (equal? result (cadar tests))))
-            (write expr)
             (if check
                 (begin
                   (display " ok") (newline))
-                  (begin
-                    (display " FAIL") (newline)
-                    (display "  Expected: ") (write (cadar tests)) (newline)
-                    (display "  Returned: ") (write result) (newline)))
-                (loop (and correct? check) (cdr tests))))))
-    (loop #t tests))
+                (begin
+                  (display " FAIL") (newline)
+                  (display "  Expected: ") (write (cadar tests)) (newline)
+                  (display "  Returned: ") (write result) (newline)))
+            (loop (and correct? check) (cdr tests))))))
+  (loop #t tests))
+
+(define (run-test test)
+  (run-tests (list test)))

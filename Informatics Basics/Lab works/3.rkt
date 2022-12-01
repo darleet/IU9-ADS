@@ -77,15 +77,14 @@
 
 (define (ref-insert seq index element seq-type)
   (let ((status
-         (and
-          (equal? seq-type 'string)
-          (not (char? (car element))))))
+         (and (equal? seq-type 'string)
+              (not (char? (car element))))))
     (define (loop seq-head seq-tail step)
       (cond (status (not status))
             ((= step index)
              (convert-reverse
               seq-type
-              (append (append seq-head element) seq-tail)))
+              (append seq-head element seq-tail)))
             ((not (null? seq-tail))
              (loop
               (append seq-head (list (car seq-tail)))
@@ -131,7 +130,6 @@
 (run-tests factorize-tests)
 
 (factorize '(- (expt x 2) (expt y 2)))
-
 (factorize '(- (expt (+ first 1) 2) (expt (- second 1) 2)))
 
 (eval (list (list 'lambda 
