@@ -266,22 +266,28 @@
                 (cdr sizes-rev))
           pointer))
     (loop (car indices-rev) 1 (cdr indices-rev) sizes-rev)))
-          ; сразу указали на индекс в последнем размере вектора
+; сразу указали на индекс в последнем размере вектора
 
 (define (multi-vector-set! m indices element)
   (vector-set! (caddr m) (find-index m indices) element))
 
 (define (multi-vector-ref m indices)
   (vector-ref (caddr m) (find-index m indices)))
-          
-; Тесты
-(define m (make-multi-vector '(11 12 9 16)))
-(multi-vector? m)
-(multi-vector-set! m '(10 7 6 12) 'test)
-(multi-vector-ref m '(10 7 6 12))
 
-(multi-vector-set! m '(1 2 1 1) 'x)
-(multi-vector-set! m '(2 1 1 1) 'y)
-(multi-vector-ref m '(1 2 1 1))
-(multi-vector-ref m '(2 1 1 1))
-;-------
+
+;---5---
+
+(define (o . procs)
+  (define (loop procs)
+    (if (null? procs)
+        (lambda (x) x)
+        (let ((proc (car procs)))
+          (if (null? (cdr procs))
+              proc
+              (lambda (x) (proc ((loop (cdr procs)) x)))))))
+  (loop procs))
+
+(define (f x) (+ x 2))
+(define (g x) (* x 3))
+(define (h x) (- x))
+
