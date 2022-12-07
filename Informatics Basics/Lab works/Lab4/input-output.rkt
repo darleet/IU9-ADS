@@ -1,33 +1,3 @@
-;---1---
-
-(define call/cc call-with-current-continuation)
-(define exit #f)
-
-(define (use-assertions)
-  (call/cc (lambda (c) (set! exit c))))
-
-(define-syntax assert
-  (syntax-rules ()
-    ((_ expr)
-     (if expr
-         (begin
-           (display "FAILED: ")
-           (display (quote expr))
-           (exit))))))
-
-(use-assertions)
-
-(define (1/x x)
-  (assert (zero? x))
-  (write (/ 1 x))
-  (newline))
-
-(map 1/x '(1 2 3 4 5))
-(map 1/x '(-2 -1 0 1 2))
-
-
-;---2---
-
 (define (save-data var path)
   (call-with-output-file path
     (lambda (port)
@@ -37,9 +7,13 @@
 (define (load-data path)
   (call-with-input-file path
     (lambda (port)
-      (write (read port))
-      (newline))))
-      
+      (let loop ((data (read port)))
+        (if (not (eof-object? data))
+            (begin (write data) (loop (read port)))
+            (newline))))))
+
+(load-data "1.txt")
+
 (define (line-count path)
   (call-with-input-file path
     (lambda (port)
@@ -51,26 +25,4 @@
                 (else (loop counter (equal? symbol #\newline))))))
       (loop 0 #\newline))))
       
-(line-count "1.rkt")
-
-
-;---3---
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-               
+(line-count "1.txt")
