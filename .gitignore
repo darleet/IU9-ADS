@@ -1,5 +1,6 @@
-# ignore all logs
+# ignore all logs and txt
 *.log
+*.txt
 
 # ignore compiled files in Scheme
 *.bak
