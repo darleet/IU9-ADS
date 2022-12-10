@@ -1,24 +1,25 @@
 #include <stdio.h>
 #include <math.h>
 
+unsigned long rec(unsigned long b_int, unsigned long a, unsigned long m) {
+    unsigned long b_rem = b_int % 2;
+    b_int /= 2;
+
+    if (b_int > 0) {
+        return (a * b_rem) % m + (2 * (rec(b_int, a, m) % m)) % m;
+    } else return a * b_rem;
+
+}
+
 int main(int argc, char **argv)
 {
-    unsigned long long a, b, m, step_result;
-    scanf("%llu%llu%llu", &a, &b, &m);
-    
-    unsigned long long i = 1;
-    unsigned long long mod_result = 0;
-    int rem;
+    unsigned long a, b, m;
+    scanf("%lu%lu%lu", &a, &b, &m);
 
-    while (b > 0) {
-        rem = b % 2;
-        b = b / 2;
-        step_result = (rem % m) * (i % m) * (a % m);
-        mod_result += step_result % m;
-        i *= 2;
-    }
+    unsigned long mod_result = 0;
+    mod_result = rec(b, a, m) % m;
 
-    mod_result %= m;
-    printf("%llu", mod_result);
+    printf("%lu", mod_result);
+
     return 0;
 }
