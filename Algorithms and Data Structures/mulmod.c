@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-unsigned long rec(unsigned long b_int, unsigned long a, unsigned long m) {
-    unsigned long b_rem = b_int % 2;
+unsigned long long rec(unsigned long long b_int, unsigned long long a, unsigned long long m) {
+    unsigned long long b_rem = b_int % 2;
     b_int /= 2;
 
     if (b_int > 0) {
@@ -13,13 +13,13 @@ unsigned long rec(unsigned long b_int, unsigned long a, unsigned long m) {
 
 int main(int argc, char **argv)
 {
-    unsigned long a, b, m;
-    scanf("%lu%lu%lu", &a, &b, &m);
+    unsigned long long a, b, m;
+    scanf("%llu%llu%llu", &a, &b, &m);
 
-    unsigned long mod_result = 0;
+    unsigned long long mod_result = 0;
     mod_result = rec(b, a, m) % m;
 
-    printf("%lu", mod_result);
+    printf("%llu", mod_result);
 
     return 0;
 }
