@@ -16,15 +16,15 @@
 (define (<> a b)
   (not (= a b)))
 
+(define (my-positive? x)
+  (> x 0))
+
 (define (signum x)
   (if (my-positive? x)
       +1
-      (if (not my-positive? x)
-          -1
-          0)))
-
-(define (my-positive? x)
-  (> x 0))
+      (if (= 0 x)
+          0
+          -1)))
 
 (define zero -273.15)
 
@@ -44,14 +44,10 @@
       0))
 
 (define (my-odd? x)
-  (if (= (remainder x 2) 1)
-      #t
-      #f))
+  (= (remainder x 2) 1))
 
 (define (my-even? x)
-  (if (= (remainder x 2) 0)
-      #t
-      #f))
+  (= (remainder x 2) 0))
 
 (define (power b e)
   (if (= b 0)

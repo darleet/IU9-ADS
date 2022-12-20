@@ -1,13 +1,14 @@
+; Алгоритмическая сложность: O(n), n - длина списка
 (define (my-range a b d)
-  (define (loop a xs)
-    (if (< (+ a d) b)
-        (loop (+ a d) (append xs (list a)))
-        (append xs (list a))))
-  (loop a '()))
+  (define (loop element)
+    (if (< element b)
+        (cons element (loop (+ element d)))
+        '()))
+  (loop a))
 
+; Алгоритмическая сложность: O(n), ачивки выполнены
 (define (my-flatten xs)
   (define (loop elem-end xs-end)
-    (write elem-end) (display " - ") (write xs-end) (newline)
     (if (not (null? xs-end)) ; если остались элементы в главном списке
         (cond ((and (not (null? elem-end)) (pair? (car xs-end))) 
                (loop elem-end (car xs-end))) ; войдем внутрь вл. списка во вл.списке
@@ -22,6 +23,7 @@
         '()))
   (loop '() xs))
 
+; Алгоритмическая сложность: O(n), n - кол-во элементов в списке
 (define (my-element? x xs)
   (define (loop status xs)
     (if (not (null? xs))
@@ -29,13 +31,15 @@
         status))
   (loop #f xs))
 
+; Алгоритмическая сложность: O(n), n - кол-во элементов в списке
 (define (my-filter pred? xs)
-  (define (loop xs-filtered xs)
-    (cond ((null? xs) xs-filtered)
-          ((pred? (car xs)) (loop (append xs-filtered (list (car xs))) (cdr xs)))
-          (else (loop xs-filtered (cdr xs)))))
-  (loop '() xs))
+  (define (loop xs)
+    (cond ((null? xs) '())
+          ((pred? (car xs)) (cons (car xs) (loop (cdr xs))))
+          (else (loop (cdr xs)))))
+  (loop xs))
 
+; Алгоритмическая сложность: O(n)
 (define (my-fold-left op xs)
   (define (loop result xs)
     (if (null? xs)
@@ -43,6 +47,7 @@
         (loop (op result (car xs)) (cdr xs))))
   (loop (car xs) (cdr xs)))
 
+; Алгоритмическая сложность: O(n)
 (define (my-fold-right op xs)
   (define (loop xs)
     (if (null? (cdr xs))
