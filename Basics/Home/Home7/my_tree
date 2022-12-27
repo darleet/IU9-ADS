@@ -1,0 +1,64 @@
+#!/usr/bin/env perl
+use Term::ANSIColor;
+
+sub print_tree {
+    my $path = shift;
+    opendir(DIR, $path);
+    my @files = sort(grep(!/\.\./ && !/\./ && (-d "$path/$_" || !$dir_only), readdir(DIR)));
+    closedir(DIR);
+
+    my $length = @files;
+    my $counter = 0;
+    my $depth = shift;
+    my $edge = shift;
+
+    foreach $file (@files) {
+        $counter += 1;
+        for($i=0;$i<$depth-1;$i++) { print "    "; }
+
+        if($depth != 0 && !$edge) { 
+            print "│   "; 
+        } elsif($depth != 0) {
+             print "    "; 
+        } 
+
+        if($counter == $length) {
+            print "└── ";
+        } else { 
+            print "├── ";
+        }
+
+        if(-f "$path/$file") {
+            if($0 eq "$path/$file") {
+                print colored("$file\n", 'bold green');
+            } else {
+                print "$file\n";
+            }
+            $counter_files += 1; 
+        } elsif(-d "$path/$file") {
+            print colored("$file\n", 'bold blue');
+            $counter_dirs += 1;
+            if($counter == $length) {
+                print_tree("$path/$file", $depth+1, 1);
+            } else {
+                print_tree("$path/$file", $depth+1, 0);
+            }
+        }
+    }
+}
+
+$dir_only = 0;
+if(grep(/-d/, @ARGV)) {
+    $dir_only = 1;
+}
+
+print colored(".\n", 'bold blue');
+$counter_dirs = 0;
+$counter_files = 0;
+print_tree(".", 0, 0);
+
+if(!$dir_only) {
+    print "\n$counter_dirs directories, $counter_files files\n";
+} else {
+    print "\n$counter_dirs directories";
+}

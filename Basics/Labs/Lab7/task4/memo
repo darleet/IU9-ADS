@@ -1,14 +1,14 @@
 #!/usr/bin/env perl
+use strict;
 
 sub memo_func {
-    $func = shift;
+    my $func = shift;
+    my %memory;
     return sub {
-        %memory;
-        $key = join(",", @_);
+        my $key = join(",", @_);
         if($memory{$key}) {
             return $memory{$key};
-        }
-        if(!$memory{$key}) {
+        } else {
             print "calculated: ";
             $memory{$key} = $func->(@_);
             return $func->(@_);
@@ -17,12 +17,12 @@ sub memo_func {
 }
 
 sub test_func {
-    $a = shift;
-    $b = shift;
-    return $a + $b;
+    my $a = shift;
+    my $b = shift;
+    return $a * $b;
 }
 
-$test_memo = memo_func(\&test_func);
+my $test_memo = memo_func(\&test_func);
 print $test_memo->(1, 2), "\n";
 print $test_memo->(1, 2), "\n";
 print $test_memo->(3, 7), "\n";
