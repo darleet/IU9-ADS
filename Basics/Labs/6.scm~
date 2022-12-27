@@ -1,0 +1,54 @@
+(load "stream.scm")
+(load "unit-test.rkt")
+
+#|
+<Expression> ::= <Signed_Number> "/" <Unsigned_Number>
+<Signed_Number> ::= "+" <Unsigned_Number> | "-" <Unsigned_Number> | <Unsigned_Number>
+<Unsigned_Number> ::= DIGIT <Number_Tail>
+<Number_Tail> ::= DIGIT <Number_Tail> | <Empty>
+<Empty> ::=
+|#
+
+
+(define call/cc call-with-current-continuation)
+
+(define (check-frac str)
+  (define error #t)
+  (define stream (make-stream (string->list str) 'EOS))
+  (define (expression stream error)
+    (signed-num stream error)
+    (expect #\/ stream error)
+    (unsigned-num stream error))
+  (define (expect token stream error)
+    (if (equal? (peek stream) token)
+        (next stream)
+        (error #f)))
+  (define (signed-num stream error)
+    (if (or (equal? #\+ (peek stream)) (equal? #\- (peek stream)))
+        (begin (next stream) (unsigned-num stream error))
+        (unsigned-num stream error)))
+  (define (unsigned-num stream error)
+    (if (and (char? (peek stream)) (char-numeric? (peek stream)))
+        (begin (next stream) (num-tail stream error))
+        (error #f)))
+  (define (num-tail stream error)
+    (if (and (char? (peek stream)) (char-numeric? (peek stream)))
+        (begin (next stream) (num-tail stream error))
+        #t))
+  (call/cc
+   (lambda (error)
+     (expression stream error)
+     (eq? (peek stream) 'EOS))))
+
+(define frac-tests
+  (list (test (check-frac "110/111") #t)
+        (test (check-frac "-4/3") #t)
+        (test (check-frac "+5/10") #t)
+        (test (check-frac "5.0/10") #f)
+        (test (check-frac "FF/10") #f)))
+
+(run-tests frac-tests)
+  
+
+
+(define 

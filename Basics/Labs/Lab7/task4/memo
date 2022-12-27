@@ -1,0 +1,28 @@
+#!/usr/bin/env perl
+
+sub memo_func {
+    $func = shift;
+    return sub {
+        %memory;
+        $key = join(",", @_);
+        if($memory{$key}) {
+            return $memory{$key};
+        }
+        if(!$memory{$key}) {
+            print "calculated: ";
+            $memory{$key} = $func->(@_);
+            return $func->(@_);
+        }
+    }
+}
+
+sub test_func {
+    $a = shift;
+    $b = shift;
+    return $a + $b;
+}
+
+$test_memo = memo_func(\&test_func);
+print $test_memo->(1, 2), "\n";
+print $test_memo->(1, 2), "\n";
+print $test_memo->(3, 7), "\n";
