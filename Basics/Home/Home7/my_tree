@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 use Term::ANSIColor;
+use autodie;
+use List::MoreUtils 'first_index';
 
 sub print_tree {
     my $path = shift;
@@ -38,9 +40,9 @@ sub print_tree {
         } elsif(-d "$path/$file") {
             print colored("$file\n", 'bold blue');
             $counter_dirs += 1;
-            if($counter == $length) {
+            if(($counter == $length) && (-r "$path/$file")) {
                 print_tree("$path/$file", $depth+1, 1);
-            } else {
+            } elsif(-r "$path/$file") {
                 print_tree("$path/$file", $depth+1, 0);
             }
         }
@@ -50,6 +52,17 @@ sub print_tree {
 $dir_only = 0;
 if(grep(/-d/, @ARGV)) {
     $dir_only = 1;
+}
+
+if(grep(/-o/, @ARGV)) {
+    $output_path = $ARGV[(first_index {/-o/} @ARGV) + 1];
+    if($output_path) {
+        open($OUTPUT, '>', $output_path);
+        select $OUTPUT;
+    } else {
+        print "Incorrect output path!";
+        exit 1;
+    }
 }
 
 print colored(".\n", 'bold blue');
