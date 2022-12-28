@@ -6,7 +6,7 @@ use List::MoreUtils 'first_index';
 sub print_tree {
     my $path = shift;
     opendir(DIR, $path);
-    my @files = sort(grep(!/\.\./ && !/\.$/ && (-d "$path/$_" || !$dir_only), readdir(DIR)));
+    my @files = sort(grep(!/\.\.$/m && !/\.$/m && (-d "$path/$_" || !$dir_only), readdir(DIR)));
     closedir(DIR);
 
     my $length = @files;
