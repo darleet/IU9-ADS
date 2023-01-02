@@ -1,5 +1,7 @@
-#!/usr/bin/env perl
-use strict;
+package PasswordGen;
+
+use Exporter qw(import);
+@EXPORT_OK = qw(gen_pass);
 
 sub gen_pass {
     my @symbols = ('a'...'z', 'A'...'Z', 0...9);
@@ -8,10 +10,4 @@ sub gen_pass {
     return $randpass;
 }
 
-sub MAIN {
-    for(my $i=0;$i<$ARGV[1];$i++) {
-        print gen_pass($ARGV[0]), "\n";
-    }
-}
-
-MAIN;
+1;
