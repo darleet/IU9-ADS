@@ -5,9 +5,10 @@
 # ignore compiled files in Scheme
 *.bak
 *.rkt~
+*.scm~
 
 # ignore executables and logs in C
-/Algorithms and Data Structures/*
+/ADS/*
 !*.c
 
 # ignore settings
