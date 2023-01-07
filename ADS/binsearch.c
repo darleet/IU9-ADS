@@ -29,7 +29,7 @@ int cmpfunc(unsigned long i) {
     return 1;
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     unsigned long a = binsearch(10, cmpfunc);
     printf("%lu", a);
     return 0;

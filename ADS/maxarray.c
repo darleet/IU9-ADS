@@ -21,7 +21,7 @@ int maxarray(void *base, size_t nel, size_t width,
     return max_index;
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     int mas[5] = {1, 4, 7, 15, 2};
     int a = maxarray((void*)mas, 5, sizeof(int), cmpfunc);
     printf("%i", a);

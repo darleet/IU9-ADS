@@ -15,7 +15,7 @@ int comb(long *arr, int index, int n, long sum){
 
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     int n;
     int answer = 0;
     scanf("%i", &n);

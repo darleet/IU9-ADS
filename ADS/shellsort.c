@@ -50,7 +50,7 @@ void swap(unsigned long i, unsigned long j) {
     arr[j] = temp;
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     shellsort(15, compare, swap);
     for (int i = 0; i < 15; i++) {
         printf("%li ", arr[i]);

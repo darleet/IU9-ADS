@@ -41,7 +41,7 @@ void swap(unsigned long i, unsigned long j) {
     arr[j] = temp;
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     bubblesort(n, compare, swap);
     for (int i = 0; i < n; i++) {
         printf("%lu ", arr[i]);

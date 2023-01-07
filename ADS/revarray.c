@@ -18,7 +18,7 @@ void revarray(void *base, size_t nel, size_t width) {
     }
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char **argv) {
     long mas[4] = {-1, 2, -34, 4};
     void *p = mas;
     revarray(p, 4, sizeof(long));

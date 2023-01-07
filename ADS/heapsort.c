@@ -95,6 +95,7 @@ int main(int argc, char **argv) {
     hsort(arr, arr_size, sizeof(str_acnt), cmpfunc);
     for (size_t i = 0; i < arr_size; i++) {
         printf("%s\n", arr[i].str);
+        free(arr[i].str);
     }
     free(arr);
     return 0;
