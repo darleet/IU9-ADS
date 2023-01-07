@@ -10,6 +10,7 @@
 # ignore executables and logs in C
 /ADS/*
 !*.c
+/ADS/tempCodeRunnerFile.c
 
 # ignore settings
 .vscode/
