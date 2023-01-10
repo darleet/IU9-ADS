@@ -7,14 +7,11 @@ int main(int argc, char **argv) {
     long x;
     scanf("%li", &x);
     if (x < 0) x = -x;
-
     long x_sqrt = (long)sqrt(x) + 1;
-
-    short *sieve;
-    sieve = (short*)calloc(x_sqrt + 1, sizeof(short));
+    char *sieve;
+    sieve = (char *)calloc(x_sqrt + 1, sizeof(char));
 
     // 0 - простое число, 1 - составное.
-
     sieve[0] = 1;
     sieve[1] = 1;
 
@@ -37,8 +34,6 @@ int main(int argc, char **argv) {
     }
 
     free(sieve);
-
     printf("%li\n", x);
     return 0;
-
 }

@@ -8,6 +8,17 @@ void swap(int *base, size_t ind1, size_t ind2) {
     base[ind2] = temp;
 }
 
+// Для того, чтобы избежать рекурсивной вложенности больше log n,
+// и, соответственно, переполнения стека, реализовал алгоритм 
+// quicksort из .NET. Об этом алгоритме узнал в одном из постов
+// на Хабре, вот ссыль: https://habr.com/ru/post/188012/
+
+// Из этого вытекает использование мной пирамидальной сортировки,
+// а она взята мной из презентации. Сам quicksort тоже из презентации,
+// изменил только саму рекурсивную функцию, добавив в нее условия
+// на превышение глубины рекурсии и длины последовательности
+// меньше переданного числа m.
+
 // heapify из презентации
 void heapify(int *base, size_t index, size_t arr_size) {
     while (1) {
@@ -79,7 +90,7 @@ size_t partition(int *base, size_t left, size_t right) {
 void quicksortrec(int *base, size_t left, size_t right, size_t selsort_tr, int call_depth) {
     if (right - left < selsort_tr) {
         selsort(base + left, right - left);
-    } else if (call_depth > 0) {
+    } else if (call_depth <= 0) {
         hsort(base + left, right - left);
     } else if (left + 1 < right) {
         size_t border = partition(base, left, right);
@@ -108,3 +119,5 @@ int main(int argc, char **argv) {
     free(arr);
     return 0;
 }
+
+// (Комментарий по поводу решения задачи перед heapify)
