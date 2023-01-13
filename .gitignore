@@ -8,9 +8,9 @@
 *.scm~
 
 # ignore executables and logs in C
-/ADS/*
+/ADS/*/*
 !*.c
-/ADS/tempCodeRunnerFile.c
+/ADS/*/tempCodeRunnerFile.c
 
 # ignore settings
 .vscode/
