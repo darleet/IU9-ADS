@@ -64,6 +64,7 @@ void csort(char *src, char *dest) {
         for (int i = 0; i < words[j].len; i++) {
             dest[dest_index] = *wp;
             dest_index++;
+            wp++;
         }
         if (wnum - i > 1) {
             dest[dest_index] = ' ';
