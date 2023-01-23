@@ -34,7 +34,6 @@ int get_words(char *str, word *arr) {
 }
 
 void csort(char *src, char *dest) {
-
     // список слов, *p - указатель на слово, len - длина слова
     word *words = (word *)malloc(sizeof(word) * (BUFFER_SIZE + 1));
     // количество слов
@@ -43,42 +42,37 @@ void csort(char *src, char *dest) {
     words = (word *)realloc(words, wnum * sizeof(word));
     // массив подсчета количества слов по длине
     int *counter = (int *)calloc(BUFFER_SIZE + 1, sizeof(int));
-    // массив отсортированных слов
-    word *sorted = (word *)malloc(sizeof(word) * wnum);
 
-    // алгоритм сортировки, модифицирован для структуры word
-    for (int i = 0; i < wnum; i++) {
-        counter[words[i].len] += 1;
-    }
-    for (int i = 1; i < BUFFER_SIZE; i++) {
-        counter[i] = counter[i-1] + counter[i];
-    }
-    for (int i = wnum - 1; i >= 0; i--) {
-        int index = counter[words[i].len];
-        sorted[index - 1].p = words[i].p;
-        sorted[index - 1].len = words[i].len;
-        counter[words[i].len]--;
+    for (int i = 0; i < wnum - 1; i++) {
+        for (int j = i + 1; j < wnum; j++) {
+            if (words[j].len < words[i].len) {
+                counter[i]++;
+            } else {
+                counter[j]++;
+            }
+        }
     }
 
     // выведем результат в dest
+    int dest_index = 0;
     for (int i = 0; i < wnum; i++) {
-        int length = sorted[i].len;
-        char *symbol = (char *)sorted[i].p;
-        for (int j = 0; j < length; j++) {
-            *dest = *symbol;
-            dest++;
-            symbol++;
+        int j = 0;
+        while (counter[j] != i) {
+            j++;
+        }
+        char *wp = words[j].p;
+        for (int i = 0; i < words[j].len; i++) {
+            dest[dest_index] = *wp;
+            dest_index++;
         }
         if (wnum - i > 1) {
-            *dest = ' ';
-            dest++;
+            dest[dest_index] = ' ';
+            dest_index++;
         }
     }
-    *dest = '\0';
-
+    dest[dest_index] = '\0';
     free(words);
     free(counter);
-    free(sorted);
 }
 
 int main(int argc, char **argv) {
