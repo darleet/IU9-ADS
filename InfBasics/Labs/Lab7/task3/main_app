@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+use strict;
 
 use lib "./";
 use PasswordGen qw(gen_pass);

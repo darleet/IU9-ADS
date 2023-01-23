@@ -4,21 +4,24 @@
 (define exit #f)
 
 (define (use-assertions)
-  (call/cc (lambda (c) (set! exit c))))
+  (call/cc
+   (lambda (c)
+     (set! exit c))))
 
 (define-syntax assert
   (syntax-rules ()
     ((_ expr)
-     (if expr
+     (if (not expr)
          (begin
            (display "FAILED: ")
-           (display (quote expr))
+           (write (quote expr))
+           (newline)
            (exit))))))
 
 (use-assertions)
 
 (define (1/x x)
-  (assert (zero? x))
+  (assert (not (zero? x)))
   (write (/ 1 x))
   (newline))
 
@@ -64,8 +67,6 @@
                                   (trib-memo (- n 2))
                                   (trib-memo (- n 1)))))))
               (set! memo-res (cons (list n new-res) memo-res))
-              (display memo-res)
-              (newline)
               new-res))))))
 
 ;---4---

@@ -3,12 +3,6 @@
 
 ;---1---
 
-(define counter 0)
-(define (next)
-  (set! counter
-        (+ counter 1))
-  counter)
-
 (define (zip . xss)
   (if (or (null? xss)
           (null? (trace-ex (car xss))))
@@ -18,6 +12,12 @@
 
 
 ;---2---
+
+(define counter 5)
+(define (next)
+  (set! counter
+        (+ counter 1))
+  counter)
 
 (define (signum x)
   (cond
@@ -34,12 +34,6 @@
   (list (test (next) 6)
         (test (next) 8)
         (test (next) 8)))
-
-(next)
-(next)
-(next)
-(next)
-(next)
 
 (run-tests the-tests)
 (run-tests next-tests)
@@ -72,9 +66,9 @@
 
 (define (ref-find seq index)
   (define (loop seq step)
-    (if (= step index)
-        (car seq)
-        (loop (cdr seq) (+ 1 step))))
+    (cond ((= step index) (car seq))
+          ((null? (cdr seq)) #f)
+          (else (loop (cdr seq) (+ 1 step)))))
   (loop seq 0))
 
 (define (ref-insert seq index element seq-type)

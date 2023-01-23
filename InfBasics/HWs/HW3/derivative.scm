@@ -1,12 +1,4 @@
-(load "unit-test.rkt")
-
-#|
-(if (not (null? (cdddr expr)))
-         `(+ (* ,(derivative (cadr expr)) ,(caddr expr) ,(cadddr expr))
-             (* ,(cadr expr) ,(derivative (caddr expr)) ,(cadddr expr))
-             (* ,(cadr expr) ,(caddr expr) ,(derivative (cadddr expr))))
-         `(+ (* ,(derivative (cadr expr)) ,(caddr expr))
-             (* ,(cadr expr) ,(derivative (caddr expr))))))|#
+(load "unit-test.scm")
 
 (define (derivative expr)
   (cond ((number? expr) 0)
@@ -104,36 +96,6 @@
          `(- ,(simplify (cadr expr)) ,(simplify `(+ ,@(cddr expr)))))
         (else expr)))
         
-
-                
-(simplify '(+ 1 2 3 (+ (+ 1 2) 2) 1 0 1 (+ 1 0 2 3 0)))
-(simplify '(+ 1 2 3 (* 2 3) (* 0 2)))
-(simplify '(+ 0 1))
-(simplify '(+ 1 0))
-(simplify '(+ 1 1))
-(simplify '(+ 1 2 3))
-(simplify '(+ 1))
-(simplify '(+ 0 0))
-(simplify '(+ 0 1 1))
-
-(simplify '(* 0 1))
-(simplify '(* 1 0))
-(simplify '(* 1 1 1 1 0))
-(simplify '(* 1 2 3 (* 0 1 (+ 1 2 0) 0)))
-(simplify '(* 1 2 3 (+ 0 1 2)))
-
-                                         
-(define ie (interaction-environment))
-
-(simplify '(cos (* 2 x (+ 1 0))))
-(simplify '(* 2 x (+ 1 0)))
-
-(simplify (quote (+ (* (+ 0 (* 1 x)) (cos (* 2 x (+ 1 0)))) (* (+ 1 (* 0 x)) (cos (* 2 x (+ 1 x)))))))
-(simplify '(+ 1 (* 0 x)))
-(simplify (quote (+ (* (- 1 (* 2 x)) (cos (* 2 x (- 1 x)))) (* (+ 1 (* 2 x)) (cos (* 2 x (+ 1 x)))))))
-
-(simplify '(* (+ 1 (* 0 x)) (cos (* 2 x (+ 1 x)))))
-(simplify (quote (+ (* (+ 0 (* 1 x)) (cos (* 2 x (+ 1 0)))) (* (+ 1 (* 0 x)) (cos (* 2 x (+ 1 x)))))))
 
 #|
 ; Тесты
