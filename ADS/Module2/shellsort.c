@@ -1,33 +1,38 @@
 #include <stdio.h>
 
-// функция расчета массива фибоначчиевых чисел
-int fib_calc(unsigned long nel, unsigned long *fibs) {
-    fibs[0] = 1;
-    fibs[1] = 1;
-    int i = 1;
-    while (fibs[i] < nel) {
-        i++;
-        fibs[i] = fibs[i-1] + fibs[i-2];
-    }
-    // возвращаем индекс последнего фиб. числа
-    return i - 1;
-}
-
 void shellsort(unsigned long nel,
         int (*compare)(unsigned long i, unsigned long j),
         void (*swap)(unsigned long i, unsigned long j)) {
+    
+    // вычисление массива фибоначчиевых чисел
     unsigned long fibs[50];
-    int mfib_index = fib_calc(nel, fibs);
-    // проход по числам фибоначчи
-    for (int di = mfib_index; di > 0; di--) {
-        // фибоначчиево число d (под индексом di)
-        unsigned long d = fibs[di];
-        for (unsigned long i = d; i < nel; i++) {
-            long long j = i - d;
-            while (j >= 0 && compare(j+d, j) < 0) {
-                swap(j+d, j);
-                j -= d;
+    fibs[0] = 1;
+    fibs[1] = 1;
+    int fib_index = 1;
+    while(fibs[fib_index] < nel) {
+        fib_index++;
+        fibs[fib_index] = fibs[fib_index - 1] + fibs[fib_index - 2];
+    }
+    fib_index--;
+
+    // проход по числам фибоначчи с конца
+    for (fib_index; fib_index > 0; fib_index--) {
+        // левая граница каждый раз в нуле
+        unsigned long l_index = 0;
+        unsigned long fib_number = fibs[fib_index];
+        // правая граница каждый раз в индексе по числу фибоначчи
+        for (unsigned long r_index = fib_number; r_index < nel; r_index++) {
+            // временные границы (левое и правое число для сравнения)
+            long long temp_li = l_index;
+            long long temp_ri = r_index;
+            // если левая граница не вышла за массив и левое число больше правого
+            while (temp_li >= 0 && compare(temp_li, temp_ri) > 0) {
+                swap(temp_li, temp_ri);
+                temp_ri = temp_li;
+                temp_li -= fib_number;
             }
+            // подвинули левую границу на 1, в цикле так же подвинется и правая
+            l_index++;
         }
     }
 }
