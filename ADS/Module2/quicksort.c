@@ -95,7 +95,7 @@ void quicksortrec(int *base, size_t left, size_t right, size_t selsort_tr, int c
     } else if (left + 1 < right) {
         size_t border = partition(base, left, right);
         quicksortrec(base, left, border, selsort_tr, call_depth-1);
-        quicksortrec(base, border, right, selsort_tr, call_depth-1);
+        quicksortrec(base, border + 1, right, selsort_tr, call_depth-1);
     }
 }
 
