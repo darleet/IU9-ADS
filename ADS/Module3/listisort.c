@@ -54,13 +54,11 @@ void clean_dlist(Elem *dlist) {
 // Сортировка вставками
 void isort(Elem *dlist, int n) {
     Elem *x_el = dlist->next;
-    for (int i = 0; i < n; i++) {
-        int j = i;
+    while (x_el != dlist) {
         Elem *cmp_el = x_el->prev;
         Elem *next_el = x_el->next;
-        while (j > 0 && cmp_el->v > x_el->v) {
+        while (cmp_el != dlist && cmp_el->v > x_el->v) {
             cmp_el = cmp_el->prev;
-            j--;
         }
         move_after(x_el, cmp_el);
         x_el = next_el;
