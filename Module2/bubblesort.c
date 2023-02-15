@@ -3,22 +3,27 @@
 void bubblesort(unsigned long nel,
         int (*compare)(unsigned long i, unsigned long j),
         void (*swap)(unsigned long i, unsigned long j)) {
-    unsigned long low = 0;
-    unsigned long high = nel - 1;
-    while (low < high && nel != 0) {
-        for (int i = low; i < high; i++) {
+    unsigned long rt = nel - 1;
+    unsigned long lt = 0;
+    unsigned long bound;
+    while (lt < rt && nel != 0) {
+        bound = rt;
+        rt = 0;
+        for (int i = lt; i < bound; i++) {
             if (compare(i, i+1) > 0) {
                 swap(i, i+1);
+                rt = i;
             }
         }
-        high -= 1;
 
-        for (int i = high; i > low; i--) {
+        bound = lt;
+        lt = 0;
+        for (int i = rt; i > bound; i--) {
             if (compare(i, i-1) < 0) {
                 swap(i, i-1);
+                lt = i;
             }
         }
-        low += 1;
     }
 }
 
