@@ -45,7 +45,7 @@ int lookup(node *tr_ent, char *str) {
     return x_node->word;
 }
 
-// Вставка строки в множество
+// Добавление строки в множество
 void insert(node *tr_ent, char *str) {
     size_t length = strlen(str);
     node *x_node = tr_ent;
