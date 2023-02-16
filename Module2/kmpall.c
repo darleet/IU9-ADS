@@ -39,8 +39,7 @@ int kmpsub(char *s, char *t, int *indices) {
             q++;
         }
         if (q == slen) {
-            k = k - slen + 1;
-            indices[counter] = k;
+            indices[counter] = k - slen + 1;
             counter++;
         }
     }
