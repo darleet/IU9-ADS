@@ -2,51 +2,63 @@
 #include <stdlib.h>
 #include <string.h>
 
-// префиксная функция (из презентации)
-void prefix(char *str, size_t *pi, size_t len) {
-    for (size_t i = 1; i < len; i++) {
-        size_t t = pi[i-1];
-        while ((t > 0) && (str[t] != str[i])) {
-            t = pi[t-1];
+#define MAX_SUB 100000
+
+// Префикс-функция из презентации
+int *prefix(char *s) {
+    int length = strlen(s);
+    int *pi = (int *)calloc(length, sizeof(int));
+    int t = 0;
+
+    for (int i = 1; i < length; i++) {
+        while (t > 0 && s[t] != s[i]) {
+            t = pi[t - 1];
         }
-        if (str[t] == str[i]) {
+        if (s[t] == s[i]) {
             t++;
         }
         pi[i] = t;
     }
+
+    return pi;
 }
 
-// алгоритм из презентации, добавил выполнение 
-// префиксной функции (т.к. выводим все индексы вхождений)
-void kmpfunc(char *str, char *sub) {
-    size_t len_sub = strlen(sub);
-    size_t len_str = strlen(str);
-    size_t *pi = (size_t *)calloc(len_sub, sizeof(size_t));
-    prefix(sub, pi, len_sub);
-    size_t q = 0;
-    for (size_t k = 0; k < len_str; k++) {
-        while ((q > 0) && (sub[q] != str[k])) {
-            q = pi[q-1];
+// Алгоритм КМП из презентации
+int kmpsub(char *s, char *t, int *indices) {
+    int counter = 0;
+    int slen = strlen(s);
+    int tlen = strlen(t);
+    int *pi = prefix(s);
+    int q = 0;
+
+    for (int k = 0; k < tlen; k++) {
+        while (q > 0 && s[q] != t[k]) {
+            q = pi[q - 1];
         }
-        if (sub[q] == str[k]) {
+        if (s[q] == t[k]) {
             q++;
         }
-        if (q == len_sub) {
-            // решил ограничиться простым выводом индекса в консоль
-            // (в принципе, этого достаточно для решения задачи)
-            printf("%lu ", k - len_sub + 1);
+        if (q == slen) {
+            k = k - slen + 1;
+            indices[counter] = k;
+            counter++;
         }
     }
-    printf("\n");
+
     free(pi);
+    return counter;
 }
 
 int main(int argc, char **argv) {
-    if (argc < 3) {
-        return 0;
+    char *s = argv[1];
+    char *t = argv[2];
+    int *indices = (int *)malloc(MAX_SUB * sizeof(int));
+    int sub_cnt = kmpsub(s, t, indices);
+
+    for (int i = 0; i < sub_cnt; i++) {
+        printf("%i ", indices[i]);
     }
-    char *sub = argv[1];
-    char *str = argv[2];
-    kmpfunc(str, sub);
+
+    free(indices);
     return 0;
 }
