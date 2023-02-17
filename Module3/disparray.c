@@ -21,11 +21,6 @@ typedef struct hash {
     list **elems;
 } hash;
 
-// Инициализация списка
-list *init_list() {
-    list *new_list = (list *)malloc(sizeof(list));
-    return new_list;
-}
 
 // Поиск элемента по ключу
 list *search_list(list *list_ent, long key) {
@@ -40,7 +35,7 @@ list *search_list(list *list_ent, long key) {
 
 // Вставка нового элемента в список
 list *insert_list(list *list_ent, long key, long value) {
-    list *new_el = init_list();
+    list *new_el = (list *)malloc(sizeof(list));
     new_el->key = key;
     new_el->value = value;
     new_el->next = list_ent;
@@ -54,14 +49,39 @@ hash *init_hash(long m) {
     return new_hash;
 }
 
-// Изменение значения в хэш-таблице
-void assign_hash(hash *hash_ent, long key, long value, long m) {
+// Удаление элемента из списка по ключу
+void delete_list(hash *hash_ent, long key, long m) {
+    long hash_val = hash(key, m);
     list *list_ent = hash_ent->elems[hash(key, m)];
-    list *list_elem = search_list(list_ent, key);
-    if (!list_elem) {
-        hash_ent->elems[hash(key, m)] = insert_list(list_ent, key, value);
+
+    if (list_ent && list_ent->key == key) {
+        hash_ent->elems[hash(key, m)] = list_ent->next;
+        free(list_ent);
+    } else { 
+        while (list_ent && list_ent->next) {
+            list *next_el = list_ent->next;
+            if (next_el->key == key) {
+                list_ent->next = next_el->next;
+                free(next_el);
+                break;
+            }
+            list_ent = list_ent->next;
+        }
+    }
+}
+
+// Изменение значения в хэш-таблице
+void assign_hash(hash *hash_ent, long key, long value, int m) {
+    if (!value) {
+        delete_list(hash_ent, key, m);
     } else {
-        list_elem->value = value;
+        list *list_ent = hash_ent->elems[hash(key, m)];
+        list *list_elem = search_list(list_ent, key);
+        if (!list_elem) {
+            hash_ent->elems[hash(key, m)] = insert_list(list_ent, key, value);
+        } else {
+            list_elem->value = value;
+        }
     }
 }
 
@@ -77,7 +97,7 @@ long at_hash(hash *hash_ent, long key, long m) {
 
 // Очистка хэш-таблицы
 void clean_hash(hash *hash_ent, long m) {
-    for (int i = 0; i < m; i++) {
+    for (long i = 0; i < m; i++) {
         list *list_ent = hash_ent->elems[i];
         while (list_ent) {
             list *next_el = list_ent->next;
@@ -90,8 +110,8 @@ void clean_hash(hash *hash_ent, long m) {
 }
 
 // Получение хэша команд
-long cmd_hash(char *str) {
-    long hash = *str;
+int cmd_hash(char *str) {
+    int hash = *str;
     size_t length = strlen(str);
     for(size_t i = 0; i < length; i++) {
         hash = (hash << 2) + *str;
